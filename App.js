@@ -22,8 +22,10 @@ const Users = props => {
                 <FlatList
                     data={users}
                     keyExtractor={({ id }) => id.toString()}
-                    renderItem={({ item }) => <Text>{item.name}-{item.email}  </Text>}
+                    renderItem={({ item }) => <Text>Name:{item.name}- <Text> E-mail: {item.email} </Text></Text>}
                 />
+            
+                
             )}
         </View>
     );
