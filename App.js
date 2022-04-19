@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Users = props => {
+    const [isLoading, setLoading] = useState(false);
+    const [users, setUsers] = useState([]);
+    getUsers = () => {
+        fetch('https://jsonplaceholder.typicode.com/users')
+          .then((response) => response.json())
+          .then((json) => setUsers(json))
+          .catch((error) => console.error(error))
+          .finally(() => setLoading(false));
+    }
+    useEffect(() => {
+        setLoading(true);
+        getUsers();
+    }, []);
+    return(
+        <View style={{ padding: 20 }}>
+            {isLoading ? <Text>Loading...</Text> :
+            (
+                <FlatList
+                    data={users}
+                    keyExtractor={({ id }) => id.toString()}
+                    renderItem={({ item }) => <Text>{item.name}-{item.email}  </Text>}
+                />
+            )}
+        </View>
+    );
+};
+export default Users;
